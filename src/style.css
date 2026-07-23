@@ -1,0 +1,306 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    cursor: none;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 50% 80%, #1e1b2e 0%, #0d0c14 60%, #080610 100%);
+    color: #e0e0e0;
+  }
+}
+
+@layer components {
+
+  /* ── Cursor custom ─────────────────────────────────────── */
+  .cursor-dot {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(200, 180, 255, 0.9);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s;
+    mix-blend-mode: screen;
+  }
+
+  .cursor-glow {
+    position: fixed;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(140, 90, 255, 0.12) 0%, transparent 70%);
+    transition: opacity 0.4s ease;
+  }
+
+  /* ── Ambient orbs ───────────────────────────────────────── */
+  .ambient-orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(80px);
+    animation: orbFloat 12s ease-in-out infinite;
+  }
+
+  .ambient-orb-1 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(100, 60, 200, 0.15) 0%, transparent 70%);
+    top: -10%;
+    left: -10%;
+    animation-delay: 0s;
+  }
+
+  .ambient-orb-2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(60, 40, 160, 0.12) 0%, transparent 70%);
+    bottom: -5%;
+    right: -5%;
+    animation-delay: -5s;
+  }
+
+  .ambient-orb-3 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(180, 100, 255, 0.08) 0%, transparent 70%);
+    top: 40%;
+    left: 60%;
+    animation-delay: -8s;
+    animation-duration: 16s;
+  }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(30px, -20px) scale(1.05); }
+    66%       { transform: translate(-20px, 30px) scale(0.96); }
+  }
+
+  /* ── Glitch title ───────────────────────────────────────── */
+  .glitch {
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(180deg, #ffffff 0%, #a0a0a0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #ffffff 0%, #a0a0a0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glitch::before {
+    animation: glitchTop 6s infinite linear;
+    clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  }
+
+  .glitch::after {
+    animation: glitchBottom 6s infinite linear;
+    clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+  }
+
+  @keyframes glitchTop {
+    0%, 90%, 100%  { transform: translate(0, 0); opacity: 1; }
+    91%            { transform: translate(-3px, 0); opacity: 0.8; -webkit-text-fill-color: #a78bfa; }
+    93%            { transform: translate(3px, 0); opacity: 0.8; }
+    95%            { transform: translate(0, 0); opacity: 1; }
+  }
+
+  @keyframes glitchBottom {
+    0%, 90%, 100%  { transform: translate(0, 0); opacity: 1; }
+    92%            { transform: translate(3px, 0); opacity: 0.8; -webkit-text-fill-color: #818cf8; }
+    94%            { transform: translate(-3px, 0); opacity: 0.8; }
+    96%            { transform: translate(0, 0); opacity: 1; }
+  }
+
+  /* ── Subtitle typewriter blink ──────────────────────────── */
+  .subtitle-blink::after {
+    content: '_';
+    animation: blink 1.2s step-end infinite;
+    color: rgba(160, 140, 200, 0.7);
+  }
+
+  /* ── Typewriter cursor ──────────────────────────────────── */
+  .typewriter-cursor::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+    margin-left: 1px;
+    opacity: 0.7;
+    color: rgba(200, 180, 255, 0.8);
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  /* ── Progress bar ───────────────────────────────────────── */
+  .progress-track {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, rgba(140, 90, 255, 0.6), rgba(200, 160, 255, 0.9));
+    border-radius: 1px;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 8px rgba(160, 100, 255, 0.4);
+  }
+
+  /* ── Buttons ────────────────────────────────────────────── */
+  .btn-ghost {
+    @apply relative px-7 py-3 rounded-full text-sm uppercase tracking-widest
+           border border-white/10 bg-white/[0.03] text-gray-300
+           backdrop-blur-sm cursor-none transition-all duration-300
+           overflow-hidden;
+  }
+
+  .btn-ghost::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(180, 130, 255, 0.15) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .btn-ghost:hover::before {
+    opacity: 1;
+  }
+
+  .btn-ghost:hover {
+    @apply border-white/25 -translate-y-0.5;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(160, 100, 255, 0.15);
+  }
+
+  .btn-ghost:active {
+    @apply translate-y-0;
+  }
+
+  .btn-active {
+    @apply border-purple-400/30 bg-purple-500/10 text-purple-200;
+    box-shadow: 0 0 20px rgba(140, 90, 255, 0.15);
+  }
+
+  /* ── Glass pill (topbar) ────────────────────────────────── */
+  .glass-pill {
+    @apply flex items-center gap-2 px-4 py-2 rounded-full
+           bg-white/[0.05] border border-white/[0.08] backdrop-blur-xl
+           text-white/50 text-sm cursor-none transition-all duration-300;
+  }
+
+  .glass-pill:hover {
+    @apply bg-white/10 border-white/15 text-white/80;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  /* ── Library panel ──────────────────────────────────────── */
+  .panel-slide-enter-active,
+  .panel-slide-leave-active {
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.45s ease;
+  }
+  .panel-slide-enter-from,
+  .panel-slide-leave-to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  /* ── Content transitions ────────────────────────────────── */
+  .content-enter-active {
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .content-leave-active {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .content-enter-from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+  .content-leave-to {
+    opacity: 0;
+    transform: translateY(-12px) scale(1.01);
+  }
+
+  /* ── Hero entrance ──────────────────────────────────────── */
+  .hero-enter-active {
+    transition: opacity 1s ease, transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .hero-leave-active {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .hero-enter-from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  .hero-leave-to {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.96);
+  }
+
+  /* ── Stagger reveal ─────────────────────────────────────── */
+  .stagger-item {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: staggerIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  @keyframes staggerIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Toast ──────────────────────────────────────────────── */
+  .toast-enter-active,
+  .toast-leave-active {
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .toast-enter-from,
+  .toast-leave-to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+
+  /* ── Fade overlay ───────────────────────────────────────── */
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s ease;
+  }
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
+
+  /* ── Divider line ───────────────────────────────────────── */
+  .ornament-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.1);
+  }
+
+  .ornament-line::before,
+  .ornament-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
+}
