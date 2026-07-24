@@ -11,7 +11,6 @@ import ToastNotif from './components/ToastNotif.vue'
 import { useSound } from './composables/useSound.js'
 import { useTypewriter } from './composables/useTypewriter.js'
 import { useToast } from './composables/useToast.js'
-import { useKeyboard } from './composables/useKeyboard.js'
 import { getRandomByType } from './data/contents.js'
 
 // ── State ─────────────────────────────────────────────────────────────────────
@@ -30,16 +29,6 @@ const { isPlaying, toggleSound } = useSound(
 )
 const { displayedText, isTyping, progress, typeText, stopTyping } = useTypewriter({ charDelay: 16 })
 const { isVisible: toastVisible, message: toastMessage, copyAndToast } = useToast()
-
-// ── Keyboard shortcuts ────────────────────────────────────────────────────────
-useKeyboard({
-  onPoem:        () => randomByType('poem'),
-  onStory:       () => randomByType('story'),
-  onNext:        () => randomCurrent(),
-  onTogglePanel: () => { panelOpen.value = !panelOpen.value },
-  onFullscreen:  () => { isFullscreen.value = !isFullscreen.value },
-  onSkip:        () => skipTyping(),
-})
 
 // ── Ink splash ────────────────────────────────────────────────────────────────
 function triggerSplash(e) {

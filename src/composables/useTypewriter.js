@@ -46,6 +46,7 @@ export function useTypewriter(options = {}) {
   function stopTyping() {
     if (timeoutId) clearTimeout(timeoutId)
     isTyping.value = false
+    progress.value = 100
   }
 
   return { displayedText, isTyping, progress, typeText, stopTyping }

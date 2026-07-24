@@ -81,14 +81,7 @@ function handleSkip() {
           </button>
         </div>
 
-        <!-- Keyboard hints -->
-        <div class="mt-12 flex items-center justify-center gap-3 flex-wrap">
-          <span class="kbd-hint">P puisi</span>
-          <span class="kbd-hint">C cerita</span>
-          <span class="kbd-hint">L library</span>
-        </div>
-
-        <div class="mt-8 flex flex-col items-center gap-2 opacity-20">
+        <div class="mt-12 flex flex-col items-center gap-2 opacity-20">
           <div class="w-px h-8 bg-white/40 animate-pulse" />
           <span class="text-[10px] uppercase tracking-[0.4em] text-white/50">scroll</span>
         </div>
@@ -151,26 +144,20 @@ function handleSkip() {
         <!-- Skip hint saat typewriter berjalan -->
         <transition name="skip-hint">
           <p v-if="isTyping" class="text-[11px] text-white/20 mt-4 text-center tracking-wider">
-            klik atau tekan <span class="kbd-hint">Esc</span> untuk skip
+            ketuk untuk skip
           </p>
         </transition>
 
-        <!-- Keyboard hints saat selesai baca -->
+        <!-- Tombol aksi selesai baca -->
         <transition name="content">
           <div v-if="!isTyping && displayedText" class="mt-12">
             <div class="ornament-line mb-8">
               <span class="text-[10px] text-white/10 tracking-[0.4em]">— selesai —</span>
             </div>
-            <div class="flex gap-3 justify-center flex-wrap mb-6">
+            <div class="flex gap-3 justify-center flex-wrap">
               <button class="btn-ghost stagger-item" style="animation-delay: 0.05s" @click="$emit('random-current')">↻ Lainnya</button>
               <button class="btn-ghost stagger-item" style="animation-delay: 0.15s" @click="$emit('random-poem')">Puisi</button>
               <button class="btn-ghost stagger-item" style="animation-delay: 0.25s" @click="$emit('random-story')">Cerita</button>
-            </div>
-            <div class="flex items-center justify-center gap-2 flex-wrap">
-              <span class="kbd-hint">Space / → lainnya</span>
-              <span class="kbd-hint">P puisi</span>
-              <span class="kbd-hint">C cerita</span>
-              <span class="kbd-hint">F fullscreen</span>
             </div>
           </div>
         </transition>
