@@ -6,29 +6,36 @@ import CursorGlow from './components/CursorGlow.vue'
 import TopBar from './components/TopBar.vue'
 import ContentDisplay from './components/ContentDisplay.vue'
 import LibraryPanel from './components/LibraryPanel.vue'
+import AboutSection from './components/AboutSection.vue'
 import FooterSection from './components/FooterSection.vue'
 import ToastNotif from './components/ToastNotif.vue'
 import { useSound } from './composables/useSound.js'
 import { useTypewriter } from './composables/useTypewriter.js'
 import { useToast } from './composables/useToast.js'
+import { useSwipe } from './composables/useSwipe.js'
 import { getRandomByType } from './data/contents.js'
 
 // ── State ─────────────────────────────────────────────────────────────────────
-const panelOpen    = ref(false)
+const panelOpen     = ref(false)
+const aboutOpen     = ref(false)
 const activeContent = ref(null)
-const activeType   = ref('poem')
-const isFullscreen = ref(false)
+const activeType    = ref('poem')
+const isFullscreen  = ref(false)
 
 // Ink splash
 const splashStyle  = ref({ left: '50%', top: '50%' })
 const splashActive = ref(false)
 
 // ── Composables ───────────────────────────────────────────────────────────────
-const { isPlaying, toggleSound } = useSound(
-  'https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3'
-)
+const { isPlaying, toggleSound } = useSound('/project-poet-ashen/bgm.mp3')
 const { displayedText, isTyping, progress, typeText, stopTyping } = useTypewriter({ charDelay: 16 })
 const { isVisible: toastVisible, message: toastMessage, copyAndToast } = useToast()
+
+// ── Swipe gesture (mobile) ────────────────────────────────────────────────────
+useSwipe({
+  onLeft:  () => { if (!panelOpen.value && !aboutOpen.value) randomCurrent() },
+  onRight: () => { if (!panelOpen.value && !aboutOpen.value) randomCurrent() },
+})
 
 // ── Ink splash ────────────────────────────────────────────────────────────────
 function triggerSplash(e) {
@@ -36,10 +43,8 @@ function triggerSplash(e) {
     splashStyle.value = { left: `${e.clientX}px`, top: `${e.clientY}px` }
   }
   splashActive.value = false
-  // next tick trigger
   setTimeout(() => {
     splashActive.value = true
-    // reset setelah animasi selesai
     setTimeout(() => { splashActive.value = false }, 900)
   }, 10)
 }
@@ -47,7 +52,6 @@ function triggerSplash(e) {
 // ── Actions ───────────────────────────────────────────────────────────────────
 function showContent(item, e) {
   triggerSplash(e)
-  // Delay sedikit biar splash keliatan sebelum konten berubah
   setTimeout(() => {
     activeContent.value = item
     typeText(item.body)
@@ -116,6 +120,7 @@ function handleShare() {
         :active-type="activeType"
         @toggle-sound="toggleSound"
         @toggle-panel="panelOpen = true"
+        @toggle-about="aboutOpen = true"
         @share="handleShare"
       />
     </div>
@@ -136,7 +141,7 @@ function handleShare() {
     />
 
     <!-- Footer -->
-    <FooterSection />
+    <FooterSection @open-about="aboutOpen = true" />
 
     <!-- Library panel -->
     <LibraryPanel
@@ -144,6 +149,12 @@ function handleShare() {
       :active-id="activeContent?.id ?? null"
       @close="panelOpen = false"
       @select="handleSelect"
+    />
+
+    <!-- About modal -->
+    <AboutSection
+      :is-open="aboutOpen"
+      @close="aboutOpen = false"
     />
 
     <!-- Toast -->

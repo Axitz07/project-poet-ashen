@@ -1,12 +1,12 @@
 <script setup>
 defineProps({
-  isPlaying: { type: Boolean, default: false },
-  isTyping:  { type: Boolean, default: false },
-  progress:  { type: Number,  default: 0 },
-  activeType: { type: String, default: 'poem' },
+  isPlaying:  { type: Boolean, default: false },
+  isTyping:   { type: Boolean, default: false },
+  progress:   { type: Number,  default: 0 },
+  activeType: { type: String,  default: 'poem' },
 })
 
-defineEmits(['toggle-sound', 'toggle-panel', 'share'])
+defineEmits(['toggle-sound', 'toggle-panel', 'toggle-about', 'share'])
 </script>
 
 <template>
@@ -29,6 +29,15 @@ defineEmits(['toggle-sound', 'toggle-panel', 'share'])
         <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
         <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
         <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+      </svg>
+    </button>
+
+    <!-- About -->
+    <button class="glass-pill" title="Tentang penulis" @click="$emit('toggle-about')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
       </svg>
     </button>
 
